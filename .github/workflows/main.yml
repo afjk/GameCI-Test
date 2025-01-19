@@ -7,10 +7,27 @@ jobs:
     name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
-      # Dockerと一時ファイルのクリーンアップ
-      - name: Cleanup resources
+      # ディスク使用量の確認
+      - name: Check disk usage
+        run: |
+          df -h
+          du -sh /*
+
+      # Dockerリソースの削除
+      - name: Cleanup Docker resources
         run: |
           docker system prune -af --volumes
+
+      # Unityビルド出力とログの削除
+      - name: Cleanup Unity and logs
+        run: |
+          sudo rm -rf build
+          sudo rm -rf Library
+          sudo rm -rf /var/log/*
+
+      # 一時ファイルの削除
+      - name: Remove temporary files
+        run: |
           sudo rm -rf /tmp/*
           sudo rm -rf /var/tmp/*
           
